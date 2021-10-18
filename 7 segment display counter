@@ -1,0 +1,65 @@
+#include "mbed.h"
+DigitalOut data(p30);
+DigitalOut clk(p27);
+DigitalOut clr(p28);
+
+void updateClk();
+void printDigit(int load[]);
+
+int load[17][8] = {
+{1,1,0,0,0,0,0,0}, // int [0][x] = 0
+{1,1,1,1,1,0,0,1}, // int [1][x] = 1
+{1,0,1,0,0,1,0,0}, // int [2][x] = 2 
+{1,0,1,1,0,0,0,0}, // int [3][x] = 3
+{1,0,0,1,1,0,0,1}, // int [4][x] = 4
+{1,0,0,1,0,0,1,0}, // int [5][x] = 5
+{1,0,0,0,0,0,1,0}, // int [6][x] = 6
+{1,1,1,1,1,0,0,0}, // int [7][x] = 7
+{1,0,0,0,0,0,0,0}, // int [8][x] = 8
+{1,0,0,1,1,0,0,0}, // int [9][x] = 9
+{1,0,0,0,1,0,0,0}, // int [10][x] = A
+{1,0,0,0,0,0,1,1}, // int [11][x] = B
+{1,1,0,0,0,1,1,0}, // int [12][x] = C
+{1,0,1,0,0,0,0,1}, // int [13][x] = D
+{1,0,0,0,0,1,1,0}, // int [14][x] = E
+{1,0,0,0,1,1,1,0}, // int [15][x] = F
+//{0,1,1,1,1,1,1,1} // int [16][x] = dot
+};
+
+int main() {
+   //Reset the display
+     clk = 0;
+  clr = 0;
+       updateClk();
+    clr = 1;
+ updateClk();
+      
+       for(int i = 0; i <= 15; i++){
+         for(int j = 0; j <= 15; j++){
+                   for(int k = 0; k <= 15; k++){
+                             printDigit(load[k]);
+                          printDigit(load[j]);
+                               printDigit(load[i]);
+                            wait(.1);
+                   }
+           }
+   }
+}
+
+void updateClk(){
+   for(int i = 0; i <= 1; i++){
+              if(clk == 0){
+              clk =1;
+  }
+  else
+               clk = 0;
+    }
+}
+
+void printDigit(int load[]){
+   //a,b,c,d,e,f = 0    dp,g = 1
+   for(int i = 0; i <= 7; i++){
+              data = load[i];
+            updateClk();
+ }
+}
