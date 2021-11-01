@@ -1,0 +1,1 @@
+This repository will be for basic interfaceing with a microcontroller using c++. So far we have used a 3 7 segment display with 28 pins(old), a Hex pad, and now moving on to a thermostat using i2c protocol
