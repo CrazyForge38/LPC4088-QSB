@@ -177,7 +177,7 @@ void CalculatorInput(int num){
 		}
 	}
 
-void displayWholeNumber(int num)
+void displayWholeNumber(int num)//this only works for a 3 digit number and not with decimals
 {
 	  int temp = num % 1;
 		num = num10;
@@ -193,34 +193,51 @@ void displayWholeNumber(int num)
 	wait(7);
 }
 
-int binaryToDecimal(int n)
-{
-    int num = n;
-    int dec_value = 0;
- 
-     Initializing base value to 1, i.e 2^0
-    int base = 1;
- 
-    int temp = num;
-    while (temp) {
-        int last_digit = temp % 10;
-        temp = temp  10;
- 
-        dec_value += last_digit  base;
- 
-        base = base  2;
+int binaryToDecimal(int16_t num)
+{			  
+    float dec_value = 0;
+    int decimalplace = num;
+    int deci_digit_bit = 0;
+    float temp_deciCumulator = 0;
+    float deci_Val = 0;
+    
+    int biDigit = 0;
+    int placeHolder = 0;
+    int intCumulator = 0;
+    float cumulator = 0;
+    
+    for (int i = 4; i >= 2; i--)
+    {
+    	deci_digit_bit = decimalplace % 10;
+    	decimalplace = decimalplace/10;
+    	if(deci_digit_bit == 1)
+    	{
+    	  temp_deciCumulator =+ 1/(2^i);
+    	}
     }
- 
-		if (n  10e15 == 1)
-		{
-		 dec_value = dec_value-1;
-		}
+    
+    num = num/1000;
+    
+    biDigit = num;
+    
+    for(int i = 0; i < 8; i++)
+    {
+      biDigit = placeHolder % 10;
+      placeHolder = placeHolder/10;
+      if(biDigit == 1)
+      {
+        intCumulator =+ 2^i
+      }
+    }
+  	  
+    dec_value = intCumulator + temp_deciCumulator;
+  	  
     return dec_value;
 }
 	
 int thermostat()
 {
-  int long long temperature = 0;
+  int16_t temperature = 0;
 	int temp_Deci = 0;
 		
 	i2c.start();
@@ -245,11 +262,11 @@ int thermostat()
 	
 	i2c.start();
 	i2c.write(0x91);
-	temperature = i2c.read(0);
+	temperature = i2c.read(0); //unsigned 16 bit integer
 	i2c.stop();
 	
 	
-
+        //inned to convert it to a signed decimal
 	temp_Deci = binaryToDecimal(temperature);
 	while(true)
 	{
